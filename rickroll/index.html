@@ -13,8 +13,71 @@
 <video src="https://www.cs.tufts.edu/comp/20/rickroll.mp4" id="rickroll" controls></video>
 <div id="lyrics"></div>
 
-<script>
-	// Complete this section and create a CSS file named style.css
+<script type="text/javascript">
+	var rickrolled = document.getElementById("rickroll");
+	var lyric = document.getElementById("lyrics");
+
+	rickrolled.addEventListener("timeupdate", function(){
+		
+
+		if (rickrolled.currentTime < 18) {
+			lyric.innerHTML = "Instrumental";
+		}
+
+		else if (rickrolled.currentTime >= 18 && rickrolled.currentTime < 35) {
+			lyric.innerHTML = "We're no strangers to love <br /> You know the rules and so do I <br /> A full commitment's what I'm thinking of <br /> You wouldn't get this from any other guy";
+		}
+
+		else if (rickrolled.currentTime >= 35 && rickrolled.currentTime < 42) {
+			lyric.innerHTML = "I just wanna tell you how I'm feeling <br /> Gotta make you understand";
+		}
+
+		else if (rickrolled.currentTime >= 42 && rickrolled.currentTime < 59) {
+			lyric.innerHTML = "Never gonna give you up <br /> Never gonna let you down <br /> Never gonna run around and desert you <br /> Never gonna make you cry <br /> Never gonna say goodbye <br /> Never gonna tell a lie and hurt you";
+		}
+
+		else if (rickrolled.currentTime >= 59 && rickrolled.currentTime < 76) {
+			lyric.innerHTML = "We've know each other for so long <br /> Your heart's been aching, but <br /> You're too shy to say it <br /> Inside, we both know what's been going on <br /> We know the game and we're gonna play it";
+		}
+
+		else if (rickrolled.currentTime >= 76 && rickrolled.currentTime < 84) {
+			lyric.innerHTML = "And if you ask me how I'm feeling <br /> Don't tell me you're too blind to see";
+		}
+
+		else if (rickrolled.currentTime >= 84 && rickrolled.currentTime < 101) {
+			lyric.innerHTML = "Never gonna give you up <br /> Never gonna let you down <br /> Never gonna run around and desert you <br /> Never gonna make you cry <br /> Never gonna say goodbye <br /> Never gonna tell a lie and hurt you";
+		}
+
+		else if (rickrolled.currentTime >= 101 && rickrolled.currentTime < 118) {
+			lyric.innerHTML = "Never gonna give you up <br /> Never gonna let you down <br /> Never gonna run around and desert you <br /> Never gonna make you cry <br /> Never gonna say goodbye <br /> Never gonna tell a lie and hurt you";
+		}
+
+		else if (rickrolled.currentTime >= 118 && rickrolled.currentTime < 135) {
+			lyric.innerHTML = "(Ooh, give you up) <br /> (Ooh, give you up) <br /> Never gonna give, never gonna give <br /> (Give you up) <br /> Never gonna give, never gonna give <br /> (Give you up)";
+		}
+
+		else if (rickrolled.currentTime >= 135 && rickrolled.currentTime < 152) {
+			lyric.innerHTML = "We've know each other for so long <br /> Your heart's been aching, but <br /> You're too shy to say it <br /> Inside, we both know what's been going on <br /> We know the game and we're gonna play it";
+		}
+
+		else if (rickrolled.currentTime >= 152 && rickrolled.currentTime < 161) {
+			lyric.innerHTML = "I just wanna tell you how I'm feeling <br /> Gotta make you understand";
+		}
+
+		else if (rickrolled.currentTime >= 161 && rickrolled.currentTime < 177) {
+			lyric.innerHTML = "Never gonna give you up <br /> Never gonna let you down <br /> Never gonna run around and desert you <br /> Never gonna make you cry <br /> Never gonna say goodbye <br /> Never gonna tell a lie and hurt you";
+		}
+
+		else if (rickrolled.currentTime >= 177 && rickrolled.currentTime < 195) {
+			lyric.innerHTML = "Never gonna give you up <br /> Never gonna let you down <br /> Never gonna run around and desert you <br /> Never gonna make you cry <br /> Never gonna say goodbye <br /> Never gonna tell a lie and hurt you";
+		}
+
+		else if (rickrolled.currentTime >= 195 && rickrolled.currentTime < 241) {
+			lyric.innerHTML = "Never gonna give you up <br /> Never gonna let you down <br /> Never gonna run around and desert you <br /> Never gonna make you cry <br /> Never gonna say goodbye <br /> Never gonna tell a lie and hurt you";
+		}
+		}, false); 
+
+	
 </script>
 </body>
 </html>	

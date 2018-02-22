@@ -1,0 +1,8 @@
+/*This is a style sheet for the rickroll video captions*/
+
+#lyrics {
+	text-align: center;
+	font-size: 20px;
+	color: black;
+	background:#d3c4f2;
+}
