@@ -47,17 +47,18 @@
 					position: pos,
 					title: "My location!"
 				});
+
 				marker.setMap(map);
 
+				
 				google.maps.event.addListener(marker, 'click', function() {
 				infowindow.setContent(marker.title);
 				infowindow.open(map, marker);
 				});
 			}
 
-			
 
-			function loadride() {
+			function load_ride() {
 				var request = new XMLHttpRequest();
 
 				request.open("POST", "https://jordan-marsh.herokuapp.com/rides", true);
@@ -67,14 +68,40 @@
 					if(request.readyState == 4 && request.status == 200){
 						data = request.responseText;
 						location = JSON.parse(data);
+					
+						for (i = 0; i < location.passengers.length; i++) {
+							ride_username = location.passengers[i].username;
+							ride_Lat = location.passengers[i].lat;
+							ride_Lng = location.passengers[i].lng;
+							add_icon();	 
+						}
 				}
 					else if (request.readyState == 4 && request.status != 200) {
 						alert("Loadride is not working at this time!");
 
 				}
 			};
-
+				
 				request.send("username=" + username + "&lat=" + myLat + "&lng=" + myLng);
+
+			}
+
+			function add_icon(ride_username, ride_Lat, ride_Lng) {
+
+				var image = 'car.png'
+				icon = new google.maps.Marker({
+					position: {lat: ride_Lat, lng: ride_Lng},
+					map: map,
+					title: ride_username,
+					icon: image
+				})
+
+				icon.setMap(map);
+
+				google.maps.event.addListener(icon, 'click', function() {
+				infowindow.setContent(icon.title);
+				infowindow.open(map, icon);
+				});
 
 			}
 
