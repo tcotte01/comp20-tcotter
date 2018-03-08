@@ -1,47 +1,85 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="initial-scale=1.0">
 		<title>Map</title>
-		<link rel="stylesheet" href="style.css" type="text/css" />
+		<meta name="viewport" content="initial-scale=1.0">
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="style.css"/>
 	</head>
 
 	<body>
 		<div id="map"></div>
 		<script>
 			var map;
-			var driver;
-			var passenger;
-			myLat = 0;
-			my Lng = 0;
-
-			function getMyLocation() {
-				navigator.geolocation.getCurrentPosition(gotLocation);
-			}
-
-			function gotLocation(position) {
-				var myLat = position.coords.latitude;
-				var myLng = position.coords.longitude;
-				outputElem = document.getElementById("info";)
-			}
+		 	var myLat = 0;
+		 	var myLng = 0;
+		 	var username = "JZiI0gMfXV";
+		 	
 
 			function initMap() {
-				map = new jordan-marsh.herokuapp.Map(document.getElementById('map'), {
-					center: {lat: latitude, lng: longitude},
-					zoom:10
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: {lat: 42.3876, lng: -71.0995},
+					zoom: 10
 				});
+				getMyLocation();
+			}
+
+			function getMyLocation() {
 				
-				if (data.driver==undefined) {
-					________=passenger;
+				if (navigator.geolocation){
+					navigator.geolocation.getCurrentPosition(function(position) {
+						myLat = position.coords.latitude;
+						myLng = position.coords.longitude;
+						renderMap();
+					});
 				}
-				else if (data.passenger==undefined) {
-					_________=driver;
+				else {
+					alert("The Geolocator is not supported by your web browser. Use chrome!");
 				}
 			}
+
+			function renderMap() {
+				var pos = new google.maps.LatLng(myLat, myLng);
+				infowindow = new google.maps.InfoWindow();
+				map.panTo(pos);
+
+				marker = new google.maps.Marker({
+					position: pos,
+					title: "My location!"
+				});
+				marker.setMap(map);
+
+				google.maps.event.addListener(marker, 'click', function() {
+				infowindow.setContent(marker.title);
+				infowindow.open(map, marker);
+				});
+			}
+
+			
+
+			function loadride() {
+				var request = new XMLHttpRequest();
+
+				request.open("POST", "https://jordan-marsh.herokuapp.com/rides", true);
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+				request.onreadystatechange = function() {
+					if(request.readyState == 4 && request.status == 200){
+						data = request.responseText;
+						location = JSON.parse(data);
+				}
+					else if (request.readyState == 4 && request.status != 200) {
+						alert("Loadride is not working at this time!");
+
+				}
+			};
+
+				request.send("username=" + username + "&lat=" + myLat + "&lng=" + myLng);
+
+			}
+
 		</script>
-		<script src="https://jordan-marsh.herokuapp.com/rides"
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnhTw-_9oCEJhRYkeZQ_LS5xJqO7dXP7E&callback=initMap"
 		async defer></script>
 	</body>
-
 </html>
