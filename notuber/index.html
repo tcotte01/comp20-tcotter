@@ -43,9 +43,11 @@
 				infowindow = new google.maps.InfoWindow();
 				map.panTo(pos);
 
+				var image = 'me.png';
 				marker = new google.maps.Marker({
 					position: pos,
-					title: "My location!"
+					title: "My location!",
+					marker: image
 				});
 
 				marker.setMap(map);
@@ -104,6 +106,8 @@
 				});
 
 			}
+		
+
 
 		</script>
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnhTw-_9oCEJhRYkeZQ_LS5xJqO7dXP7E&callback=initMap"
