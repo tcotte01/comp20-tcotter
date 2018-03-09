@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Map</title>
+		<title>Tess' Map</title>
 		<meta name="viewport" content="initial-scale=1.0">
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="style.css"/>
@@ -11,9 +11,12 @@
 		<div id="map"></div>
 		<script>
 			var map;
+			var icon;
 		 	var myLat = 0;
 		 	var myLng = 0;
 		 	var username = "JZiI0gMfXV";
+		 	var is_vechicle = false;
+		 	var loc; // this is the storage location for vechicles and passengers
 		 	
 
 			function initMap() {
@@ -34,7 +37,7 @@
 					});
 				}
 				else {
-					alert("The Geolocator is not supported by your web browser. Use chrome!");
+					alert("The Geolocator is not supported by your web browser.");
 				}
 			}
 
@@ -43,20 +46,26 @@
 				infowindow = new google.maps.InfoWindow();
 				map.panTo(pos);
 
-				var image = 'me.png';
+				var image = {
+					url: 'me.png',
+					scaledSize: new google.maps.Size(50,50),
+				};
 				marker = new google.maps.Marker({
 					position: pos,
-					title: "My location!",
-					marker: image
+					title: username,
+					icon: image
 				});
 
 				marker.setMap(map);
 
 				
 				google.maps.event.addListener(marker, 'click', function() {
-				infowindow.setContent(marker.title);
+				var setString = "Username: " + marker.title + "\n Distance: " + minimum_distance();
+				infowindow.setContent(setString);
 				infowindow.open(map, marker);
 				});
+
+				load_ride();
 			}
 
 
@@ -64,19 +73,33 @@
 				var request = new XMLHttpRequest();
 
 				request.open("POST", "https://jordan-marsh.herokuapp.com/rides", true);
-				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 				request.onreadystatechange = function() {
+
 					if(request.readyState == 4 && request.status == 200){
 						data = request.responseText;
-						location = JSON.parse(data);
+						loc = JSON.parse(data);
 					
-						for (i = 0; i < location.passengers.length; i++) {
-							ride_username = location.passengers[i].username;
-							ride_Lat = location.passengers[i].lat;
-							ride_Lng = location.passengers[i].lng;
-							add_icon();	 
+					if (loc.passengers == undefined) {
+						for (i = 0; i < loc.vechicles.length; i++) {
+							ride_username = loc.vechicles[i].username;
+							ride_Lat = loc.vechicles[i].lat;
+							ride_Lng = loc.vechicles[i].lng;
+							add_icon(ride_username, ride_Lat, ride_Lng);
+							is_vechicle = false;
 						}
+					}
+					else{
+						for (i = 0; i < loc.passengers.length; i++) {
+							ride_username = loc.passengers[i].username;
+							ride_Lat = loc.passengers[i].lat;
+							ride_Lng = loc.passengers[i].lng;
+							add_icon(ride_username, ride_Lat, ride_Lng);
+							is_vechicle = true;
+
+						}
+					}
 				}
 					else if (request.readyState == 4 && request.status != 200) {
 						alert("Loadride is not working at this time!");
@@ -90,21 +113,69 @@
 
 			function add_icon(ride_username, ride_Lat, ride_Lng) {
 
-				var image = 'car.png'
+				var image = 'car.png';
+
 				icon = new google.maps.Marker({
-					position: {lat: ride_Lat, lng: ride_Lng},
+					position: new google.maps.LatLng(ride_Lat, ride_Lng),
 					map: map,
 					title: ride_username,
 					icon: image
-				})
-
-				icon.setMap(map);
-
-				google.maps.event.addListener(icon, 'click', function() {
-				infowindow.setContent(icon.title);
-				infowindow.open(map, icon);
 				});
 
+				
+
+				google.maps.event.addListener(icon, 'click', function() {
+				var setString = "Username: " + icon.title + "\n Distance: " + distance_between(this.position.lat(), this.position.lng()); 
+				infowindow.setContent(setString);
+				infowindow.open(map, this);
+				});
+				
+				icon.setMap(map);
+			}
+
+			function distance_between(ride_Lat, ride_Lng) {
+
+				Number.prototype.toRad = function() {
+					return this * Math.PI / 180;
+				}
+
+				var R = 6371;
+				var dLat = (ride_Lat - myLat).toRad();
+				var dLon = (ride_Lng - myLng).toRad();
+				var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+                    Math.cos(myLat.toRad()) * Math.cos(ride_Lat.toRad()) * Math.sin(dLon/2) * Math.sin(dLon/2);  
+
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    				var d = R * c; 
+
+    			return(d)*0.621371; 
+
+
+			}
+
+			function minimum_distance() {
+				var min_d = 10000000000;
+
+				if (is_vechicle == true) {
+					for(i = 0; i < loc.passengers.length; i++) {
+						var d = distance_between(loc.passengers[i].lat, loc.passengers[i].lng);
+						if (d < min_d) {
+							min_d = d;
+						}
+					}
+
+				}
+				else {
+					for(i = 0; i < loc.vechicles.length; i++) {
+						var d = distance_between(loc.vechicles[i].lat, loc.vechicles[i].lng);
+						if (d < min_d) {
+							min_d = d;
+						}
+					}
+				}
+
+				return(min_d);
+				
 			}
 		
 
