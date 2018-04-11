@@ -15,8 +15,8 @@
 		 	var myLat = 0;
 		 	var myLng = 0;
 		 	var username = "JZiI0gMfXV";
-		 	var is_vechicle = false;
-		 	var loc; // this is the storage location for vechicles and passengers
+		 	var is_vehicle = false;
+		 	var loc; // this is the storage location for vehicles and passengers
 		 	
 
 			function initMap() {
@@ -72,7 +72,7 @@
 			function load_ride() {
 				var request = new XMLHttpRequest();
 
-				request.open("POST", "https://jordan-marsh.herokuapp.com/rides", true);
+				request.open("POST", "https://floating-crag-30203.herokuapp.com/rides", true);
 				request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 				request.onreadystatechange = function() {
@@ -82,12 +82,12 @@
 						loc = JSON.parse(data);
 					
 					if (loc.passengers == undefined) {
-						for (i = 0; i < loc.vechicles.length; i++) {
-							ride_username = loc.vechicles[i].username;
-							ride_Lat = loc.vechicles[i].lat;
-							ride_Lng = loc.vechicles[i].lng;
+						for (i = 0; i < loc.vehicles.length; i++) {
+							ride_username = loc.vehicles[i].username;
+							ride_Lat = loc.vehicles[i].lat;
+							ride_Lng = loc.vehicles[i].lng;
 							add_icon(ride_username, ride_Lat, ride_Lng);
-							is_vechicle = false;
+							is_vehicle = false;
 						}
 					}
 					else{
@@ -96,7 +96,7 @@
 							ride_Lat = loc.passengers[i].lat;
 							ride_Lng = loc.passengers[i].lng;
 							add_icon(ride_username, ride_Lat, ride_Lng);
-							is_vechicle = true;
+							is_vehicle = true;
 
 						}
 					}
@@ -156,7 +156,7 @@
 			function minimum_distance() {
 				var min_d = 10000000000;
 
-				if (is_vechicle == true) {
+				if (is_vehicle == true) {
 					for(i = 0; i < loc.passengers.length; i++) {
 						var d = distance_between(loc.passengers[i].lat, loc.passengers[i].lng);
 						if (d < min_d) {
@@ -166,8 +166,8 @@
 
 				}
 				else {
-					for(i = 0; i < loc.vechicles.length; i++) {
-						var d = distance_between(loc.vechicles[i].lat, loc.vechicles[i].lng);
+					for(i = 0; i < loc.vehicles.length; i++) {
+						var d = distance_between(loc.vehicles[i].lat, loc.vehicles[i].lng);
 						if (d < min_d) {
 							min_d = d;
 						}
