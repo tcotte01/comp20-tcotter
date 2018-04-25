@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+  <title>Security Assignment of Joshua Mitchell's Assignments 2 and 3</title>
+  <link rel="stylesheet" href="style.css"/>
+  <meta charset="utf-8" />
+</head>
+
+<body>
+  <h2> Introduction and Methodology </h2>
+
+  <p> This assignment is an effort to understand basic web security and code scanning. Using our preliminary understanding of common vulnerabilities in web apps and servers discussed in class, I scanned the code and used curl to identify errors. Encountered trouble configuring the proxy when trying to use burp suite, so I didn't not end up using burp suite. I explored both Joshua's Assignment 2 map and then primarily focused on the server-side effects from Joshua's Assignment 3 heroku app. </p>
+
+  <h2> Issues </h2>
+
+  <code> Issue 1: "app.use(function(req, res, next) {
+  	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  	next();
+	});"  
+	</code>
+
+
+	<img src="img/cors.png" alt="cross-origin resource sharing" />
+
+	<p>
+	When cross-origin resource sharing is always in effect as is show by the "*" inclusion on line 10 in his index.js file, having cors enacted all the time can raise vulnerabilities. This is is true because the requested resource allows sharing at every origin, and that means any site can send an XHR request and access his server's response which is a security risk. 
+	</p>
+ 
+  <code> Issue 2: "curl --data "username=<script>window.alert('hi');</script>&lat=11&lng-22" https://whispering-island-76016.herokuapp.com/rides""
+  </code>
+
+   <img src="img/injection.png" alt="Injecting script" />
+
+  <p> This exploits vulnerabilities in the code andallows unwanted script to be inserted when a curl is executed. Hackers can query the database and inject script which can be a high risk vulnerability. 
+  </p>
+
+
+  <p> Issue 3: he left several console.log statements in his code whcih may cause errors in certain browsers. Though this is not a huge security threat, it can impact app functionality</p>
+
+  <img src="img/consolelog.png" alt="Leaving in console.log statments" />
+  <img src="img/conlog.png" alt="Leaving in console.log statments 2" />
+
+
+</body>
+
+</html>
